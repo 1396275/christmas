@@ -175,23 +175,36 @@ const bgm = document.getElementById('bgm');
 const btn = document.getElementById('musicBtn');
 let isPlaying = false;
 
-// 尝试静音自动播放（浏览器允许）
-bgm.play().then(() => {
-  document.body.classList.add('music-on');
-}).catch(() => {});
-
-btn.addEventListener('click', async () => {
-  if (!isPlaying) {
-    bgm.muted = false;   // 用户手势中解除静音
-    await bgm.play();
-    isPlaying = true;
-    document.body.classList.add('music-on');
-    btn.innerText = '⏸ MUSIC';
-  } else {
-    bgm.pause();
+// 页面加载时：尝试播放（静音），用于“预热”时间轴
+window.addEventListener('load', () => {
+  bgm.muted = true;
+  bgm.play().then(() => {
+    // 成功静音播放，不算真正播放
     isPlaying = false;
-    document.body.classList.remove('music-on');
-    btn.innerText = '▶ MUSIC';
+  }).catch(() => {
+    // 被浏览器拒绝也没关系，等用户点击
+    isPlaying = false;
+  });
+});
+
+// 播放按钮：真正控制开始 / 暂停
+btn.addEventListener('click', async () => {
+  try {
+    if (!isPlaying) {
+      // 用户手势中解除静音并播放
+      bgm.muted = false;
+      await bgm.play();
+      isPlaying = true;
+      document.body.classList.add('music-on');
+      btn.innerText = '⏸ MUSIC';
+    } else {
+      bgm.pause();
+      isPlaying = false;
+      document.body.classList.remove('music-on');
+      btn.innerText = '▶ MUSIC';
+    }
+  } catch (e) {
+    console.error('音频播放被阻止：', e);
   }
 });
 </script>
