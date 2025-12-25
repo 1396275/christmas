@@ -26,7 +26,11 @@
       pointer-events: none;
       animation: lightMove 18s ease-in-out infinite alternate;
       transition: opacity 1.2s ease;
-      opacity: 0.7;
+      opacity: var(--music-glow, 0.75);
+    }
+
+    body.music-on::before {
+      opacity: var(--music-glow, 1);
     }
 
     @keyframes lightMove {
@@ -80,17 +84,11 @@
       transition: transform 0.6s ease, box-shadow 0.6s ease;
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 30px 70px rgba(180,120,130,0.35);
-    }
-
     .photo-frame {
       width: 100%;
       height: 180px;
       border-radius: 18px;
       margin-bottom: 22px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
       overflow: hidden;
       position: relative;
       cursor: pointer;
@@ -100,19 +98,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 1.2s ease;
-    }
-
-    .photo-frame:hover img {
-      transform: scale(1.06);
-    }
-
-    .photo-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.35));
-      pointer-events: none;
     }
 
     .divider {
@@ -122,31 +107,12 @@
       margin: 16px auto 18px;
     }
 
-    .card p {
-      font-size: 1.05rem;
-      line-height: 2;
-      margin: 0.6em 0;
-      letter-spacing: 0.4px;
-    }
-
     .heart {
       font-size: 1.6rem;
       color: #d16b7a;
       animation: heartbeat 2.4s infinite;
       margin-top: 18px;
       cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .heart:active {
-      transform: scale(1.4);
-    }
-
-    .signature {
-      margin-top: 1.6em;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      color: #9a6b73;
     }
 
     @keyframes heartbeat {
@@ -156,26 +122,10 @@
       100% { transform: scale(1); }
     }
 
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: rgba(255,255,255,0.8);
-      user-select: none;
-      pointer-events: none;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(110vh); }
-    }
-
     .music-tip {
       position: fixed;
       bottom: 18px;
       right: 18px;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      opacity: 0.7;
     }
 
     .music-tip button {
@@ -187,135 +137,106 @@
       cursor: pointer;
       font-family: inherit;
     }
-
-    .music-tip button:hover {
-      background: rgba(255,255,255,0.9);
-    }
-      body.music-on::before {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
 
-  <audio id="bgm" loop autoplay>
-    <source src="music.mp3" type="audio/mpeg" />
-  </audio>
+<audio id="bgm" loop autoplay>
+  <source src="music.mp3" type="audio/mpeg" />
+</audio>
 
-  <div class="container">
-    <h1>Merry Christmas</h1>
-    <h2>For · 杨钰萍</h2>
+<div class="container">
+  <h1>Merry Christmas</h1>
+  <h2>For · 杨钰萍</h2>
 
-    <div class="card">
-      <div class="photo-frame" id="secretTrigger">
-        <!-- 将 photo.jpg 替换为你们的照片（建议偏暖色调） -->
-        <img src="photo.jpg" alt="Our Moment" />
-        <div id="secretText" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.82);opacity:0;transition:opacity 0.6s ease;font-size:1rem;letter-spacing:1px;color:#8f5b65;text-align:center;padding:20px;">
-          I didn’t plan to fall in love.<br/>I just didn’t plan to stop.
-        </div>
+  <div class="card">
+    <div class="photo-frame" id="secretTrigger">
+      <img src="photo.jpg" alt="Our Moment" />
+      <div id="secretText" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.82);opacity:0;transition:opacity 0.6s ease;font-size:1rem;letter-spacing:1px;color:#8f5b65;text-align:center;padding:20px;">
+        I didn’t plan to fall in love.<br/>I just didn’t plan to stop.
       </div>
-
-      <p>亲爱的钰萍：</p>
-      <div class="divider"></div>
-      <p>
-        这个冬天，
-        因为你，
-        变得明亮而温柔。
-      </p>
-      <p>
-        如果圣诞有颜色，
-        那一定是你笑起来的样子。
-      </p>
-      <p style="margin-top:18px;font-size:0.95rem;letter-spacing:1px;color:#b07a83;">This winter feels brighter with you.</p>
-      <div class="heart">❤</div>
-      <div class="signature">WITH LOVE · ALWAYS</div>
     </div>
+
+    <p>亲爱的钰萍：</p>
+    <div class="divider"></div>
+    <p>这个冬天，因为你，变得明亮而温柔。</p>
+    <p>如果圣诞有颜色，那一定是你笑起来的样子。</p>
+    <p style="margin-top:18px;font-size:0.95rem;letter-spacing:1px;color:#b07a83;">This winter feels brighter with you.</p>
+    <div class="heart">❤</div>
   </div>
+</div>
 
-  <div class="music-tip">
-    <button id="musicBtn" onclick="toggleMusic()">⏸ MUSIC</button>
-  </div>
+<div class="music-tip">
+  <button id="musicBtn">⏸ MUSIC</button>
+</div>
 
-  <script>
-    const snowflakes = ["❄", "❅"];
-    for (let i = 0; i < 30; i++) {
-      const snow = document.createElement("div");
-      snow.className = "snowflake";
-      snow.innerText = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-      snow.style.left = Math.random() * 100 + "vw";
-      snow.style.fontSize = 10 + Math.random() * 20 + "px";
-      snow.style.animationDuration = 10 + Math.random() * 14 + "s";
-      snow.style.opacity = Math.random() * 0.7 + 0.3;
-      document.body.appendChild(snow);
-    }
+<script>
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = false;
 
-    const bgm = document.getElementById("bgm");
-    let isPlaying = false;
-
-    function toggleMusic() {
-      if (!isPlaying) {
-        bgm.play();
-        isPlaying = true;
-        document.body.classList.add('music-on');
-        document.getElementById('musicBtn').innerText = '⏸ MUSIC';
-      } else {
-        bgm.pause();
-        isPlaying = false;
-        document.body.classList.remove('music-on');
-        document.getElementById('musicBtn').innerText = '▶ MUSIC';
-      }
-    } else {
-        bgm.pause();
-        isPlaying = false;
-        document.body.classList.remove('music-on');
-      }
-    } else {
-        bgm.pause();
-        isPlaying = false;
-      }
-    }
-
-    // autoplay handled by browser policy
+  window.addEventListener('load', () => {
     bgm.play().then(() => {
       isPlaying = true;
       document.body.classList.add('music-on');
+      musicBtn.innerText = '⏸ MUSIC';
     }).catch(() => {
       isPlaying = false;
+      musicBtn.innerText = '▶ MUSIC';
     });
-        isPlaying = true;
-      }
-    }, { once: true });
-  
-    // Hidden easter egg: long press on photo
-    const trigger = document.getElementById('secretTrigger');
-    const secret = document.getElementById('secretText');
-    let pressTimer;
+  });
 
-    trigger.addEventListener('mousedown', () => {
-      pressTimer = setTimeout(() => {
-        secret.style.opacity = 1;
-      }, 1200);
-    });
+  function toggleMusic() {
+    if (!isPlaying) {
+      bgm.play();
+      isPlaying = true;
+      document.body.classList.add('music-on');
+      musicBtn.innerText = '⏸ MUSIC';
+    } else {
+      bgm.pause();
+      isPlaying = false;
+      document.body.classList.remove('music-on');
+      musicBtn.innerText = '▶ MUSIC';
+    }
+  }
 
-    trigger.addEventListener('mouseup', () => {
-      clearTimeout(pressTimer);
-    });
+  musicBtn.addEventListener('click', toggleMusic);
 
-    trigger.addEventListener('mouseleave', () => {
-      clearTimeout(pressTimer);
-    });
+  // Easter egg: long press
+  const trigger = document.getElementById('secretTrigger');
+  const secret = document.getElementById('secretText');
+  let pressTimer;
 
-    trigger.addEventListener('touchstart', () => {
-      pressTimer = setTimeout(() => {
-        secret.style.opacity = 1;
-      }, 1200);
-    });
+  trigger.addEventListener('mousedown', () => {
+    pressTimer = setTimeout(() => secret.style.opacity = 1, 1200);
+  });
+  ['mouseup','mouseleave','touchend'].forEach(e => trigger.addEventListener(e, () => clearTimeout(pressTimer)));
 
-    trigger.addEventListener('touchend', () => {
-      clearTimeout(pressTimer);
-    });
+  // 音乐驱动背景呼吸
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaElementSource(bgm);
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
 
-  </script>
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  function breathe() {
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for (let i = 0; i < 8; i++) sum += dataArray[i];
+    const energy = sum / 8 / 255;
+    const glow = 0.75 + energy * 0.25;
+    document.documentElement.style.setProperty('--music-glow', glow.toFixed(3));
+    requestAnimationFrame(breathe);
+  }
+
+  bgm.addEventListener('play', () => {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    breathe();
+  });
+</script>
 
 </body>
 </html>
