@@ -3,32 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <title>致杨钰萍 · 圣诞晴光</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* 全局设置 */
+    /* --- 基础设置 --- */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       font-family: "Cormorant Garamond", "Playfair Display", serif;
-      background: linear-gradient(180deg, #fdfbfb 0%, #ebedee 100%); /* 更干净的雪白色调 */
+      background: linear-gradient(180deg, #fdfbfb 0%, #ebedee 100%);
       overflow: hidden;
       color: #4a4a4a;
+      user-select: none; /* 防止双击选中文本 */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* 动态背景光斑 */
+    /* 背景光斑 */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 15% 15%, rgba(255, 230, 230, 0.5), transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(230, 240, 255, 0.5), transparent 40%);
+        radial-gradient(circle at 15% 15%, rgba(255, 230, 230, 0.4), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(230, 240, 255, 0.4), transparent 40%);
       pointer-events: none;
       animation: ambientLight 10s ease-in-out infinite alternate;
-      z-index: 1;
+      z-index: 0;
     }
 
     @keyframes ambientLight {
@@ -36,7 +38,36 @@
       to { opacity: 0.9; transform: scale(1.05); }
     }
 
-    /* 主容器：Flex布局保证绝对居中 */
+    /* --- 雪花容器 --- */
+    #snow-container {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; /* 让雪花不阻挡点击 */
+      z-index: 1;
+    }
+
+    /* 雪花样式 */
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      color: #fff;
+      font-size: 1em;
+      opacity: 0.8;
+      animation-name: fall, sway;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8);
+    }
+
+    @keyframes fall {
+      to { transform: translateY(105vh); }
+    }
+    @keyframes sway {
+      0%, 100% { margin-left: 0; }
+      50% { margin-left: 25px; }
+    }
+
+    /* --- 布局容器 --- */
     .container {
       position: relative;
       z-index: 2;
@@ -48,12 +79,12 @@
       padding: 0 20px;
     }
 
-    /* 卡片主体：类似拍立得或信纸的设计 */
+    /* --- 卡片设计 --- */
     .card {
       background: #ffffff;
       width: 100%;
-      max-width: 380px; /* 限制宽度，更精致 */
-      padding: 20px 20px 35px 20px; /* 底部留白稍多，重心下移 */
+      max-width: 380px;
+      padding: 20px 20px 30px 20px;
       border-radius: 12px;
       box-shadow: 
         0 15px 35px rgba(0,0,0,0.08), 
@@ -63,21 +94,20 @@
       transform: translateY(20px);
       animation: cardEnter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       position: relative;
+      transition: transform 0.1s;
     }
 
     @keyframes cardEnter {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 1. 图片：作为卡片的“头图”，撑起上半部分 */
     .photo-frame {
       width: 100%;
-      height: 240px; /* 稍微加高，增加分量 */
+      height: 240px;
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 25px;
       background: #f0f0f0;
-      position: relative;
     }
     
     .photo-frame img {
@@ -87,12 +117,10 @@
       transition: transform 5s ease;
     }
     
-    /* 播放音乐时图片缓慢缩放 */
     body.music-on .photo-frame img {
       transform: scale(1.1);
     }
 
-    /* 2. 标题整合进卡片 */
     h1 {
       font-family: "Playfair Display", serif;
       font-size: 2.2rem;
@@ -111,7 +139,6 @@
       font-weight: 600;
     }
 
-    /* 装饰线 */
     .divider {
       width: 40px;
       height: 2px;
@@ -119,23 +146,46 @@
       margin: 0 auto 20px;
     }
 
-    /* 正文 */
-    .message {
+    .message p {
       font-size: 1.05rem;
       line-height: 1.9;
       color: #555;
-      margin-bottom: 10px;
+      margin: 0;
     }
 
+    /* 隐藏消息区域 */
     .english-note {
       font-family: "Playfair Display", serif;
       font-size: 0.9rem;
       color: #a07e83;
       margin-top: 15px;
       font-style: italic;
+      min-height: 1.5em; /* 占位防止跳动 */
+      transition: opacity 0.5s;
     }
 
-    /* 底部落款日期 - 解决“轻”的问题 */
+    /* 互动的爱心按钮 */
+    .interactive-heart {
+      display: inline-block;
+      font-size: 1.5rem;
+      color: #d16b7a;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      animation: heartbeat 2s infinite;
+    }
+    
+    .interactive-heart:active {
+      transform: scale(0.8);
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* --- 底部日期 --- */
     .footer-date {
       position: absolute;
       bottom: 25px;
@@ -146,12 +196,10 @@
       z-index: 2;
     }
 
-    /* 音乐按钮：放在右上角或者悬浮，不打扰主视觉 */
+    /* --- 音乐按钮 --- */
     .music-control {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
+      top: 20px; right: 20px; z-index: 10;
     }
 
     .music-btn {
@@ -175,6 +223,21 @@
       border-color: #f0d0d4;
     }
 
+    /* --- 点击产生的漂浮爱心 --- */
+    .float-heart {
+      position: fixed;
+      color: #ff8fa3;
+      font-size: 1.2rem;
+      pointer-events: none;
+      animation: floatUp 1s ease-out forwards;
+      z-index: 99;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(0, -60px) scale(1.5); }
+    }
+
   </style>
 </head>
 <body>
@@ -182,6 +245,8 @@
 <audio id="bgm" loop playsinline preload="auto">
   <source src="music.mp3" type="audio/mpeg" />
 </audio>
+
+<div id="snow-container"></div>
 
 <div class="music-control">
   <button id="musicBtn" class="music-btn">♫ PLAY MUSIC</button>
@@ -204,7 +269,9 @@
       <p>如果圣诞有颜色，那一定是你笑起来的样子。</p>
     </div>
 
-    <div class="english-note">
+    <div class="interactive-heart" id="secretHeart">❤</div>
+
+    <div class="english-note" id="englishNote">
       “ This winter feels brighter with you. ”
     </div>
   </div>
@@ -215,12 +282,9 @@
 </div>
 
 <script>
+/* --- 音乐控制 --- */
 const bgm = document.getElementById('bgm');
 const btn = document.getElementById('musicBtn');
-
-function isActuallyPlaying() {
-  return !bgm.paused && !bgm.muted;
-}
 
 function updateUIState(playing) {
   if (playing) {
@@ -235,25 +299,111 @@ function updateUIState(playing) {
 }
 
 btn.addEventListener('click', async () => {
-  try {
-    if (isActuallyPlaying()) {
-      bgm.pause();
-      updateUIState(false);
-    } else {
-      bgm.muted = false;
-      await bgm.play();
-      updateUIState(true);
-    }
-  } catch (e) {
+  if (!bgm.paused && !bgm.muted) {
+    bgm.pause();
     updateUIState(false);
+  } else {
+    bgm.muted = false;
+    await bgm.play();
+    updateUIState(true);
   }
 });
 
-// 微信兼容
 document.addEventListener("WeixinJSBridgeReady", function () {
     bgm.muted = false;
     bgm.play().then(() => updateUIState(true)).catch(e => {});
 }, false);
+
+
+/* --- 彩蛋1：雪花特效 --- */
+function createSnow() {
+  const container = document.getElementById('snow-container');
+  const snowflake = document.createElement('div');
+  snowflake.classList.add('snowflake');
+  snowflake.innerHTML = '❄';
+  
+  // 随机位置、大小、速度
+  snowflake.style.left = Math.random() * 100 + 'vw';
+  snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+  snowflake.style.animationDuration = (Math.random() * 3 + 5) + 's, ' + (Math.random() * 2 + 2) + 's';
+  snowflake.style.opacity = Math.random();
+  
+  container.appendChild(snowflake);
+
+  // 动画结束后移除元素
+  setTimeout(() => {
+    snowflake.remove();
+  }, 8000);
+}
+// 每200毫秒生成一片雪花
+setInterval(createSnow, 200);
+
+
+/* --- 彩蛋2：点击屏幕爆爱心 --- */
+document.addEventListener('click', (e) => {
+  // 如果点的是按钮或特定的彩蛋区域，不触发这个通用的（避免重叠太乱）
+  if (e.target.id === 'musicBtn' || e.target.id === 'secretHeart') return;
+
+  const heart = document.createElement('div');
+  heart.classList.add('float-heart');
+  heart.innerHTML = '❤'; // 或者用 emoji 💖
+  heart.style.left = e.clientX + 'px';
+  heart.style.top = e.clientY + 'px';
+  
+  // 随机微调颜色
+  const colors = ['#ff8fa3', '#d16b7a', '#ffc2d1', '#e0a0a0'];
+  heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+  
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 1000);
+});
+
+
+/* --- 彩蛋3：隐藏的告白（核心彩蛋） --- */
+const secretHeart = document.getElementById('secretHeart');
+const englishNote = document.getElementById('englishNote');
+let isRevealed = false;
+
+secretHeart.addEventListener('click', (e) => {
+  e.stopPropagation(); // 阻止冒泡
+  
+  // 1. 爆出一堆爱心
+  for(let i=0; i<10; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('float-heart');
+      heart.innerHTML = '❤';
+      // 以心为中心随机散开
+      const x = e.clientX + (Math.random() * 100 - 50);
+      const y = e.clientY + (Math.random() * 100 - 50);
+      heart.style.left = x + 'px';
+      heart.style.top = y + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    }, i * 50);
+  }
+
+  // 2. 切换文字
+  if (!isRevealed) {
+    englishNote.style.opacity = 0;
+    setTimeout(() => {
+      // 在这里修改你想对她说的隐藏情话 ↓
+      englishNote.innerHTML = "“ Merry Christmas, my only one. ”";
+      englishNote.style.color = "#d16b7a"; // 变粉色
+      englishNote.style.opacity = 1;
+    }, 500);
+    isRevealed = true;
+  } else {
+    // 再次点击切回原样（可选）
+    englishNote.style.opacity = 0;
+    setTimeout(() => {
+      englishNote.innerHTML = "“ This winter feels brighter with you. ”";
+      englishNote.style.color = "#a07e83";
+      englishNote.style.opacity = 1;
+    }, 500);
+    isRevealed = false;
+  }
+});
 </script>
 
 </body>
