@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    /* CSS 部分保持不变，效果很好 */
     html, body {
       margin: 0;
       padding: 0;
@@ -129,6 +130,7 @@
       position: fixed;
       bottom: 18px;
       right: 18px;
+      z-index: 10;
     }
 
     .music-tip button {
@@ -139,20 +141,31 @@
       border-radius: 24px;
       cursor: pointer;
       font-family: inherit;
+      outline: none;
+      transition: all 0.3s ease;
     }
-      .music-tip::before {
-      content: "Tap once to enable sound";
+
+    /* 增加按压效果 */
+    .music-tip button:active {
+      transform: scale(0.95);
+    }
+
+    .music-tip::before {
+      content: "Tap to enable sound"; /* 修改提示语，更准确 */
       display: block;
       font-size: 0.65rem;
       letter-spacing: 1px;
       color: rgba(180, 120, 130, 0.6);
       text-align: center;
       margin-bottom: 6px;
+      opacity: 1;
+      transition: opacity 0.5s;
     }
 
     body.music-on .music-tip::before {
       content: "Sound on";
       color: rgba(180, 120, 130, 0.85);
+      opacity: 0.8;
     }
 
     body.music-on {
@@ -168,7 +181,7 @@
 </head>
 <body>
 
-<audio id="bgm" loop muted playsinline>
+<audio id="bgm" loop playsinline preload="auto">
   <source src="music.mp3" type="audio/mpeg" />
 </audio>
 
@@ -191,46 +204,69 @@
 </div>
 
 <div class="music-tip">
-  <button id="musicBtn">⏸ MUSIC</button>
+  <button id="musicBtn">▶ MUSIC</button>
 </div>
 
 <script>
 const bgm = document.getElementById('bgm');
 const btn = document.getElementById('musicBtn');
-let isPlaying = false;
 
-// 页面加载时：尝试播放（静音），用于“预热”时间轴
+// 核心逻辑：判断是否真正在播放（且有声音）
+function isActuallyPlaying() {
+  return !bgm.paused && !bgm.muted;
+}
+
+// UI 更新函数
+function updateUIState(playing) {
+  if (playing) {
+    btn.innerText = '⏸ MUSIC';
+    document.body.classList.add('music-on');
+  } else {
+    btn.innerText = '▶ MUSIC';
+    document.body.classList.remove('music-on');
+  }
+}
+
+// 点击按钮控制
+btn.addEventListener('click', async () => {
+  try {
+    if (isActuallyPlaying()) {
+      // 如果正在播放，则暂停
+      bgm.pause();
+      updateUIState(false);
+    } else {
+      // 如果暂停或静音，则开启
+      bgm.muted = false; // 解除静音
+      await bgm.play();
+      updateUIState(true);
+    }
+  } catch (e) {
+    console.error('播放控制失败：', e);
+    // 如果报错，通常是因为没加载好，重置UI
+    updateUIState(false);
+  }
+});
+
+// 页面加载时的“静音预热”逻辑
 window.addEventListener('load', () => {
-  bgm.muted = true;
+  bgm.muted = true; // 先静音
   bgm.play().then(() => {
-    // 成功静音播放，不算真正播放
-    isPlaying = false;
-  }).catch(() => {
-    // 被浏览器拒绝也没关系，等用户点击
-    isPlaying = false;
+    // 预播放成功，但因为是静音，我们不改变按钮状态
+    // 这里保持静默，等待用户点击开启声音
+    console.log('Audio preloaded (muted).');
+  }).catch((e) => {
+    console.log('Autoplay blocked by browser, waiting for interaction.');
   });
 });
 
-// 播放按钮：真正控制开始 / 暂停
-btn.addEventListener('click', async () => {
-  try {
-    if (!isPlaying) {
-      // 用户手势中解除静音并播放
-      bgm.muted = false;
-      await bgm.play();
-      isPlaying = true;
-      document.body.classList.add('music-on');
-      btn.innerText = '⏸ MUSIC';
-    } else {
-      bgm.pause();
-      isPlaying = false;
-      document.body.classList.remove('music-on');
-      btn.innerText = '▶ MUSIC';
-    }
-  } catch (e) {
-    console.error('音频播放被阻止：', e);
-  }
-});
+// 兼容微信内置浏览器的自动播放逻辑
+document.addEventListener("WeixinJSBridgeReady", function () {
+    bgm.muted = false; // 微信里可以尝试直接有声播放
+    bgm.play().then(() => {
+       updateUIState(true);
+    }).catch(e => console.log(e));
+}, false);
+
 </script>
 
 </body>
