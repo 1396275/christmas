@@ -171,38 +171,58 @@
 </div>
 
 <script>
+  /* ================= 音乐播放系统（稳定 + 高级） ================= */
   const bgm = document.getElementById('bgm');
   const musicBtn = document.getElementById('musicBtn');
   let isPlaying = false;
+  let userInteracted = false;
 
-  window.addEventListener('load', () => {
-    bgm.play().then(() => {
+  // 统一的播放函数（处理浏览器策略）
+  async function safePlay() {
+    try {
+      await bgm.play();
       isPlaying = true;
       document.body.classList.add('music-on');
       musicBtn.innerText = '⏸ MUSIC';
-    }).catch(() => {
+    } catch (e) {
       isPlaying = false;
-      musicBtn.innerText = '▶ MUSIC';
-    });
-  });
-
-  function toggleMusic() {
-    if (!isPlaying) {
-      bgm.play();
-      isPlaying = true;
-      document.body.classList.add('music-on');
-      musicBtn.innerText = '⏸ MUSIC';
-    } else {
-      bgm.pause();
-      isPlaying = false;
-      document.body.classList.remove('music-on');
       musicBtn.innerText = '▶ MUSIC';
     }
   }
 
-  musicBtn.addEventListener('click', toggleMusic);
+  function safePause() {
+    bgm.pause();
+    isPlaying = false;
+    document.body.classList.remove('music-on');
+    musicBtn.innerText = '▶ MUSIC';
+  }
 
-  // Easter egg: long press
+  // 页面加载后尝试自动播放（不依赖用户交互）
+  window.addEventListener('load', () => {
+    safePlay();
+  });
+
+  // 首次用户交互兜底（iOS / Safari）
+  ['click','touchstart'].forEach(evt => {
+    document.addEventListener(evt, () => {
+      if (!userInteracted) {
+        userInteracted = true;
+        if (!isPlaying) safePlay();
+      }
+    }, { once: true });
+  });
+
+  // 按钮控制
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      safePause();
+    } else {
+      safePlay();
+    }
+  });
+
+  /* ================= 隐藏彩蛋：长按 ================= */
   const trigger = document.getElementById('secretTrigger');
   const secret = document.getElementById('secretText');
   let pressTimer;
@@ -210,9 +230,12 @@
   trigger.addEventListener('mousedown', () => {
     pressTimer = setTimeout(() => secret.style.opacity = 1, 1200);
   });
-  ['mouseup','mouseleave','touchend'].forEach(e => trigger.addEventListener(e, () => clearTimeout(pressTimer)));
 
-  // 音乐驱动背景呼吸
+  ['mouseup','mouseleave','touchend'].forEach(e =>
+    trigger.addEventListener(e, () => clearTimeout(pressTimer))
+  );
+
+  /* ================= 音乐驱动背景呼吸（超细腻） ================= */
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   const source = audioCtx.createMediaElementSource(bgm);
   const analyser = audioCtx.createAnalyser();
@@ -222,19 +245,32 @@
 
   const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
+  let breatheRAF = null;
+
   function breathe() {
     analyser.getByteFrequencyData(dataArray);
     let sum = 0;
     for (let i = 0; i < 8; i++) sum += dataArray[i];
     const energy = sum / 8 / 255;
-    const glow = 0.75 + energy * 0.25;
+
+    // 极克制的映射（高级感关键）
+    const glow = 0.78 + energy * 0.18;
     document.documentElement.style.setProperty('--music-glow', glow.toFixed(3));
-    requestAnimationFrame(breathe);
+
+    breatheRAF = requestAnimationFrame(breathe);
   }
 
   bgm.addEventListener('play', () => {
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    breathe();
+    if (!breatheRAF) breathe();
+  });
+
+  bgm.addEventListener('pause', () => {
+    if (breatheRAF) {
+      cancelAnimationFrame(breatheRAF);
+      breatheRAF = null;
+    }
+    document.documentElement.style.setProperty('--music-glow', '0.75');
   });
 </script>
 
