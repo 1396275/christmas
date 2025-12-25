@@ -2,277 +2,176 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>致杨钰萍 · 圣诞晴光</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <title>Merry Christmas, 杨钰萍</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    html, body {
+    :root {
+      --bg1: #fff7e6;
+      --bg2: #ffe9cc;
+      --accent: #cfa75e;
+      --text-main: #3a2f2f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
       margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      font-family: "Cormorant Garamond", "Playfair Display", "PingFang SC", "Microsoft YaHei", serif;
-      background: linear-gradient(180deg, #fff6ef 0%, #fdeff2 40%, #f7f9ff 100%);
-      overflow: hidden;
-      color: #5a3e3e;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.9), transparent 60%),
-                  radial-gradient(circle at 80% 20%, rgba(255,255,255,0.7), transparent 55%);
-      pointer-events: none;
-      animation: lightMove 18s ease-in-out infinite alternate;
-      transition: opacity 1.2s ease;
-      opacity: var(--music-glow, 0.75);
-    }
-
-    body.music-on::before {
-      opacity: var(--music-glow, 1);
-    }
-
-    @keyframes lightMove {
-      from { opacity: 0.8; }
-      to { opacity: 1; }
-    }
-
-    .container {
-      position: relative;
-      z-index: 2;
-      height: 100%;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 32px 20px;
-      animation: fadeIn 1.6s ease forwards;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-main);
+      background: radial-gradient(circle at center, var(--bg1), var(--bg2));
+      transition: background 1.2s ease, filter 1.2s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h1 {
-      font-size: 3rem;
-      font-weight: 600;
-      letter-spacing: 3px;
-      margin-bottom: 0.3em;
-      color: #b44b5a;
-    }
-
-    h2 {
-      font-size: 1.1rem;
-      font-weight: 400;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #9a6b73;
-      margin-bottom: 1.8em;
+    body.music-on {
+      filter: brightness(1.05) saturate(1.05);
     }
 
     .card {
-      background: rgba(255,255,255,0.65);
-      border: 1px solid rgba(255,255,255,0.8);
-      border-radius: 28px;
-      padding: 36px 32px 40px;
-      max-width: 540px;
-      box-shadow: 0 20px 50px rgba(180,120,130,0.25);
+      background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(8px);
-      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      border-radius: 24px;
+      padding: 48px 56px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
+      max-width: 520px;
     }
 
-    .photo-frame {
-      width: 100%;
-      height: 180px;
-      border-radius: 18px;
-      margin-bottom: 22px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      margin: 0 0 12px 0;
+      letter-spacing: 1px;
     }
 
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    h2 {
+      font-weight: 400;
+      font-size: 1.1rem;
+      margin: 0 0 32px 0;
+      opacity: 0.85;
     }
 
-    .divider {
-      width: 56px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #cfa6ad, transparent);
-      margin: 16px auto 18px;
+    p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin: 0 0 32px 0;
     }
 
     .heart {
-      font-size: 1.6rem;
-      color: #d16b7a;
-      animation: heartbeat 2.4s infinite;
-      margin-top: 18px;
+      font-size: 2rem;
+      color: #c44;
+      animation: pulse 2.5s infinite ease-in-out;
+      margin-bottom: 24px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+
+    #musicBtn {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 36px;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      color: #3a2f2f;
       cursor: pointer;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    @keyframes heartbeat {
-      0% { transform: scale(1); }
-      45% { transform: scale(1.15); }
-      90% { transform: scale(1); }
-      100% { transform: scale(1); }
+    #musicBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
     }
 
-    .music-tip {
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-    }
-
-    .music-tip button {
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(255,255,255,0.9);
-      color: #b44b5a;
-      padding: 8px 18px;
-      border-radius: 24px;
-      cursor: pointer;
-      font-family: inherit;
+    #musicBtn:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
 <body>
 
-<audio id="bgm" loop autoplay>
-  <source src="music.mp3" type="audio/mpeg" />
-</audio>
-
-<div class="container">
-  <h1>Merry Christmas</h1>
-  <h2>For · 杨钰萍</h2>
-
   <div class="card">
-    <div class="photo-frame" id="secretTrigger">
-      <img src="photo.jpg" alt="Our Moment" />
-      <div id="secretText" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.82);opacity:0;transition:opacity 0.6s ease;font-size:1rem;letter-spacing:1px;color:#8f5b65;text-align:center;padding:20px;">
-        I didn’t plan to fall in love.<br/>I just didn’t plan to stop.
-      </div>
-    </div>
-
-    <p>亲爱的钰萍：</p>
-    <div class="divider"></div>
-    <p>这个冬天，因为你，变得明亮而温柔。</p>
-    <p>如果圣诞有颜色，那一定是你笑起来的样子。</p>
-    <p style="margin-top:18px;font-size:0.95rem;letter-spacing:1px;color:#b07a83;">This winter feels brighter with you.</p>
     <div class="heart">❤</div>
+    <h1>Merry Christmas</h1>
+    <h2>To Yang Yuping · 杨钰萍</h2>
+    <p>
+      This winter feels brighter with you.<br>
+      愿这个圣诞，温柔、浪漫，也像你一样美好。
+    </p>
+
+    <button id="musicBtn">▶ MUSIC</button>
   </div>
-</div>
 
-<div class="music-tip">
-  <button id="musicBtn">⏸ MUSIC</button>
-</div>
+  <audio id="bgm" loop playsinline>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
 
-<script>
-  /* ================= 音乐播放系统（稳定 + 高级） ================= */
-  const bgm = document.getElementById('bgm');
-  const musicBtn = document.getElementById('musicBtn');
-  let isPlaying = false;
-  let userInteracted = false;
+  <script>
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('musicBtn');
 
-  // 统一的播放函数（处理浏览器策略）
-  async function safePlay() {
-    try {
-      await bgm.play();
-      isPlaying = true;
-      document.body.classList.add('music-on');
-      musicBtn.innerText = '⏸ MUSIC';
-    } catch (e) {
-      isPlaying = false;
-      musicBtn.innerText = '▶ MUSIC';
+    let isPlaying = false;
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+
+    function setupAudioContext() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioCtx.createMediaElementSource(bgm);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
     }
-  }
 
-  function safePause() {
-    bgm.pause();
-    isPlaying = false;
-    document.body.classList.remove('music-on');
-    musicBtn.innerText = '▶ MUSIC';
-  }
+    function animateBreath() {
+      if (!isPlaying) return;
+      analyser.getByteFrequencyData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+      const avg = sum / dataArray.length / 255;
+      const brightness = 1 + avg * 0.08;
+      const saturation = 1 + avg * 0.1;
+      document.body.style.filter = `brightness(${brightness}) saturate(${saturation})`;
+      requestAnimationFrame(animateBreath);
+    }
 
-  // 页面加载后尝试自动播放（不依赖用户交互）
-  window.addEventListener('load', () => {
-    safePlay();
-  });
+    musicBtn.addEventListener('click', async () => {
+      try {
+        if (!audioCtx) setupAudioContext();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
 
-  // 首次用户交互兜底（iOS / Safari）
-  ['click','touchstart'].forEach(evt => {
-    document.addEventListener(evt, () => {
-      if (!userInteracted) {
-        userInteracted = true;
-        if (!isPlaying) safePlay();
+        if (!isPlaying) {
+          await bgm.play();
+          isPlaying = true;
+          document.body.classList.add('music-on');
+          musicBtn.innerText = '⏸ MUSIC';
+          animateBreath();
+        } else {
+          bgm.pause();
+          isPlaying = false;
+          document.body.classList.remove('music-on');
+          document.body.style.filter = '';
+          musicBtn.innerText = '▶ MUSIC';
+        }
+      } catch (e) {
+        console.error('音乐播放失败', e);
       }
-    }, { once: true });
-  });
-
-  // 按钮控制
-  musicBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (isPlaying) {
-      safePause();
-    } else {
-      safePlay();
-    }
-  });
-
-  /* ================= 隐藏彩蛋：长按 ================= */
-  const trigger = document.getElementById('secretTrigger');
-  const secret = document.getElementById('secretText');
-  let pressTimer;
-
-  trigger.addEventListener('mousedown', () => {
-    pressTimer = setTimeout(() => secret.style.opacity = 1, 1200);
-  });
-
-  ['mouseup','mouseleave','touchend'].forEach(e =>
-    trigger.addEventListener(e, () => clearTimeout(pressTimer))
-  );
-
-  /* ================= 音乐驱动背景呼吸（超细腻） ================= */
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const source = audioCtx.createMediaElementSource(bgm);
-  const analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 256;
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
-
-  const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-  let breatheRAF = null;
-
-  function breathe() {
-    analyser.getByteFrequencyData(dataArray);
-    let sum = 0;
-    for (let i = 0; i < 8; i++) sum += dataArray[i];
-    const energy = sum / 8 / 255;
-
-    // 极克制的映射（高级感关键）
-    const glow = 0.78 + energy * 0.18;
-    document.documentElement.style.setProperty('--music-glow', glow.toFixed(3));
-
-    breatheRAF = requestAnimationFrame(breathe);
-  }
-
-  bgm.addEventListener('play', () => {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    if (!breatheRAF) breathe();
-  });
-
-  bgm.addEventListener('pause', () => {
-    if (breatheRAF) {
-      cancelAnimationFrame(breatheRAF);
-      breatheRAF = null;
-    }
-    document.documentElement.style.setProperty('--music-glow', '0.75');
-  });
-</script>
+    });
+  </script>
 
 </body>
 </html>
