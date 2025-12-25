@@ -140,6 +140,30 @@
       cursor: pointer;
       font-family: inherit;
     }
+      .music-tip::before {
+      content: "Tap once to enable sound";
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: rgba(180, 120, 130, 0.6);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    body.music-on .music-tip::before {
+      content: "Sound on";
+      color: rgba(180, 120, 130, 0.85);
+    }
+
+    body.music-on {
+      animation: subtleBreath 6s ease-in-out infinite;
+    }
+
+    @keyframes subtleBreath {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.035); }
+      100% { filter: brightness(1); }
+    }
   </style>
 </head>
 <body>
