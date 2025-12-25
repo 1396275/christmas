@@ -111,7 +111,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.65));
+      background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.35));
       pointer-events: none;
     }
 
@@ -198,7 +198,7 @@
 </head>
 <body>
 
-  <audio id="bgm" loop>
+  <audio id="bgm" loop autoplay>
     <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
@@ -233,7 +233,7 @@
   </div>
 
   <div class="music-tip">
-    <button onclick="toggleMusic()">MUSIC</button>
+    <button id="musicBtn" onclick="toggleMusic()">⏸ MUSIC</button>
   </div>
 
   <script>
@@ -257,7 +257,14 @@
         bgm.play();
         isPlaying = true;
         document.body.classList.add('music-on');
+        document.getElementById('musicBtn').innerText = '⏸ MUSIC';
       } else {
+        bgm.pause();
+        isPlaying = false;
+        document.body.classList.remove('music-on');
+        document.getElementById('musicBtn').innerText = '▶ MUSIC';
+      }
+    } else {
         bgm.pause();
         isPlaying = false;
         document.body.classList.remove('music-on');
@@ -268,9 +275,13 @@
       }
     }
 
-    document.body.addEventListener("click", () => {
-      if (!isPlaying) {
-        bgm.play().catch(() => {});
+    // autoplay handled by browser policy
+    bgm.play().then(() => {
+      isPlaying = true;
+      document.body.classList.add('music-on');
+    }).catch(() => {
+      isPlaying = false;
+    });
         isPlaying = true;
       }
     }, { once: true });
