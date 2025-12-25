@@ -2,232 +2,268 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>🎄 圣诞快乐，杨钰萍</title>
+  <title>致杨钰萍 · 圣诞晴光</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
-
-    body {
+    html, body {
       margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #b71c1c, #1b5e20);
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: "Cormorant Garamond", "Playfair Display", "PingFang SC", "Microsoft YaHei", serif;
+      background: linear-gradient(180deg, #fff6ef 0%, #fdeff2 40%, #f7f9ff 100%);
       overflow: hidden;
-      color: #fff;
+      color: #5a3e3e;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.9), transparent 60%),
+                  radial-gradient(circle at 80% 20%, rgba(255,255,255,0.7), transparent 55%);
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      margin-bottom: 0.3em;
+      color: #b44b5a;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #9a6b73;
+      margin-bottom: 1.8em;
     }
 
     .card {
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 28px;
+      padding: 36px 32px 40px;
+      max-width: 540px;
+      box-shadow: 0 20px 50px rgba(180,120,130,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .photo-frame {
+      width: 100%;
+      height: 180px;
+      border-radius: 18px;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
+      overflow: hidden;
       position: relative;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      padding: 42px 32px;
-      max-width: 360px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-      z-index: 10;
-      animation: fadeIn 2s ease;
     }
 
-    h1 { font-size: 28px; margin-bottom: 6px; }
-    .name { font-size: 22px; margin-bottom: 22px; }
-    .message { font-size: 16px; line-height: 1.8; min-height: 120px; }
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(1.05) saturate(1.05);
+    }
+
+    .photo-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.65));
+      pointer-events: none;
+    }
+
+    .divider {
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #cfa6ad, transparent);
+      margin: 16px auto 18px;
+    }
+
+    .card p {
+      font-size: 1.05rem;
+      line-height: 2;
+      margin: 0.6em 0;
+      letter-spacing: 0.4px;
+    }
+
     .heart {
-      font-size: 36px;
+      font-size: 1.6rem;
+      color: #d16b7a;
+      animation: heartbeat 2.4s infinite;
       margin-top: 18px;
-      cursor: pointer;
-      animation: heartbeat 1.5s infinite;
     }
 
-    footer { font-size: 12px; opacity: 0.7; margin-top: 16px; }
-
-    /* 装饰元素 */
-    .tree { position: fixed; bottom: 0; font-size: 64px; }
-    .tree.left { left: 12px; }
-    .tree.right { right: 12px; }
-
-    .deer {
-      position: fixed;
-      bottom: 10px;
-      left: -80px;
-      font-size: 40px;
-      animation: deerWalk 18s linear infinite;
+    .signature {
+      margin-top: 1.6em;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: #9a6b73;
     }
 
-    .santa {
-      position: fixed;
-      top: 60px;
-      left: -100px;
-      font-size: 42px;
-      animation: santaFly 25s linear infinite;
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.15); }
+      90% { transform: scale(1); }
+      100% { transform: scale(1); }
     }
 
-    .gift {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      font-size: 36px;
-      cursor: pointer;
-      animation: giftBounce 2s infinite;
-    }
-
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.7);
-      padding: 20px 24px;
-      border-radius: 16px;
-      font-size: 15px;
-      line-height: 1.6;
-      display: none;
-      z-index: 20;
-    }
-
-    .music-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 26px;
-      cursor: pointer;
-    }
-
-    .snow {
+    .snowflake {
       position: fixed;
       top: -10px;
+      color: rgba(255,255,255,0.8);
       user-select: none;
       pointer-events: none;
       animation: fall linear infinite;
     }
 
-    @keyframes fall { to { transform: translateY(110vh); } }
-    @keyframes deerWalk { to { transform: translateX(120vw); } }
-    @keyframes santaFly { to { transform: translateX(130vw); } }
-    @keyframes giftBounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    @keyframes fall {
+      to { transform: translateY(110vh); }
     }
-    @keyframes heartbeat {
-      0% { transform: scale(1); }
-      25% { transform: scale(1.15); }
-      50% { transform: scale(1); }
-      75% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+
+    .music-tip {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      opacity: 0.7;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .music-tip button {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.9);
+      color: #b44b5a;
+      padding: 8px 18px;
+      border-radius: 24px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .music-tip button:hover {
+      background: rgba(255,255,255,0.9);
     }
   </style>
 </head>
-
 <body>
 
-  <!-- BGM -->
   <audio id="bgm" loop>
-    <source src="bgm.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- 装饰 -->
-  <div class="tree left">🎄</div>
-  <div class="tree right">🎄</div>
-  <div class="deer">🦌</div>
-  <div class="santa">🎅</div>
+  <div class="container">
+    <h1>Merry Christmas</h1>
+    <h2>For · 杨钰萍</h2>
 
-  <div class="gift" onclick="showGift()">🎁</div>
-  <div class="music-btn" onclick="toggleMusic()">🎵</div>
+    <div class="card">
+      <div class="photo-frame" id="secretTrigger">
+        <!-- 将 photo.jpg 替换为你们的照片（建议偏暖色调） -->
+        <img src="photo.jpg" alt="Our Moment" />
+        <div id="secretText" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.82);opacity:0;transition:opacity 0.6s ease;font-size:1rem;letter-spacing:1px;color:#8f5b65;text-align:center;padding:20px;">
+          I didn’t plan to fall in love.<br/>I just didn’t plan to stop.
+        </div>
+      </div>
 
-  <div class="popup" id="popup"></div>
+      <p>亲爱的钰萍：</p>
+      <div class="divider"></div>
+      <p>
+        这个冬天，
+        因为你，
+        变得明亮而温柔。
+      </p>
+      <p>
+        如果圣诞有颜色，
+        那一定是你笑起来的样子。
+      </p>
+      <p style="margin-top:18px;font-size:0.95rem;letter-spacing:1px;color:#b07a83;">This winter feels brighter with you.</p>
+      <div class="heart">❤</div>
+      <div class="signature">WITH LOVE · ALWAYS</div>
+    </div>
+  </div>
 
-  <!-- 主卡片 -->
-  <div class="card" onclick="startMusicOnce()">
-    <h1>🎄 圣诞快乐</h1>
-    <div class="name">杨钰萍</div>
-    <div class="message" id="typing"></div>
-    <div class="heart" onclick="showHeart()">❤️</div>
-    <footer>This little website is just for you.</footer>
+  <div class="music-tip">
+    <button onclick="toggleMusic()">MUSIC</button>
   </div>
 
   <script>
-    /* 打字 */
-    const text = [
-      "这个页面，",
-      "不是模板，也不是复制。",
-      "",
-      "是我想在圣诞节，",
-      "认真对你说的话。",
-      "",
-      "圣诞快乐，杨钰萍 ❤️"
-    ];
-
-    let line = 0, char = 0;
-    const typingDiv = document.getElementById("typing");
-
-    function typeWriter() {
-      if (line < text.length) {
-        if (char < text[line].length) {
-          typingDiv.innerHTML += text[line][char++];
-          setTimeout(typeWriter, 80);
-        } else {
-          typingDiv.innerHTML += "<br/>";
-          line++; char = 0;
-          setTimeout(typeWriter, 400);
-        }
-      }
-    }
-    typeWriter();
-
-    /* 雪花 */
-    for (let i = 0; i < 40; i++) {
+    const snowflakes = ["❄", "❅"];
+    for (let i = 0; i < 30; i++) {
       const snow = document.createElement("div");
-      snow.className = "snow";
-      snow.innerHTML = "❄";
+      snow.className = "snowflake";
+      snow.innerText = snowflakes[Math.floor(Math.random() * snowflakes.length)];
       snow.style.left = Math.random() * 100 + "vw";
-      snow.style.fontSize = Math.random() * 18 + 12 + "px";
-      snow.style.animationDuration = Math.random() * 6 + 6 + "s";
-      snow.style.opacity = Math.random();
+      snow.style.fontSize = 10 + Math.random() * 20 + "px";
+      snow.style.animationDuration = 10 + Math.random() * 14 + "s";
+      snow.style.opacity = Math.random() * 0.7 + 0.3;
       document.body.appendChild(snow);
     }
 
-    /* BGM 控制 */
     const bgm = document.getElementById("bgm");
-    bgm.volume = 0.3;
-    let started = false;
+    let isPlaying = false;
 
-    function startMusicOnce() {
-      if (!started) {
-        bgm.play().catch(()=>{});
-        started = true;
+    function toggleMusic() {
+      if (!isPlaying) {
+        bgm.play();
+        isPlaying = true;
+      } else {
+        bgm.pause();
+        isPlaying = false;
       }
     }
 
-    function toggleMusic() {
-      if (bgm.paused) bgm.play();
-      else bgm.pause();
-    }
+    document.body.addEventListener("click", () => {
+      if (!isPlaying) {
+        bgm.play().catch(() => {});
+        isPlaying = true;
+      }
+    }, { once: true });
+  
+    // Hidden easter egg: long press on photo
+    const trigger = document.getElementById('secretTrigger');
+    const secret = document.getElementById('secretText');
+    let pressTimer;
 
-    /* 弹窗 */
-    const popup = document.getElementById("popup");
+    trigger.addEventListener('mousedown', () => {
+      pressTimer = setTimeout(() => {
+        secret.style.opacity = 1;
+      }, 1200);
+    });
 
-    function showGift() {
-      popup.innerHTML = "🎁 给杨钰萍的小礼物<br/><br/>愿你被偏爱，也被坚定选择。";
-      popup.style.display = "block";
-      startMusicOnce();
-    }
+    trigger.addEventListener('mouseup', () => {
+      clearTimeout(pressTimer);
+    });
 
-    function showHeart() {
-      popup.innerHTML = "❤️ 有些话平时不说，<br/>但我一直很认真地喜欢你。";
-      popup.style.display = "block";
-      startMusicOnce();
-    }
+    trigger.addEventListener('mouseleave', () => {
+      clearTimeout(pressTimer);
+    });
 
-    popup.onclick = () => popup.style.display = "none";
+    trigger.addEventListener('touchstart', () => {
+      pressTimer = setTimeout(() => {
+        secret.style.opacity = 1;
+      }, 1200);
+    });
+
+    trigger.addEventListener('touchend', () => {
+      clearTimeout(pressTimer);
+    });
+
   </script>
 
 </body>
